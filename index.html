@@ -4783,6 +4783,268 @@ if (startup) {
   </div>
 </div>
 <!-- END LOADING SCREEN -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDbeQx-a9mgGZXXYZ-dGy2whzxUFlqARX8",
+  authDomain: "hsc-e-test-paper.firebaseapp.com",
+  projectId: "hsc-e-test-paper",
+  storageBucket: "hsc-e-test-paper.firebasestorage.app",
+  messagingSenderId: "332837438517",
+  appId: "1:332837438517:web:9863306f897667016d1d7c",
+  measurementId: "G-YZPFM9JC0R"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+</script>
+  
+<style>
+  #authScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: linear-gradient(135deg, #063d25, #087b43);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .authCard {
+    background: white;
+    width: 100%;
+    max-width: 380px;
+    padding: 25px;
+    border-radius: 18px;
+    box-sizing: border-box;
+    text-align: center;
+    color: #173b29;
+  }
+
+  .authLogo {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #087b43;
+    color: white;
+    display: grid;
+    place-items: center;
+    margin: auto;
+    font-size: 23px;
+    font-weight: bold;
+  }
+
+  .authCard h2 { margin-bottom: 5px; }
+  .authCard p { color: #666; font-size: 14px; }
+
+  .authCard input {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+  }
+
+  .authBtn {
+    width: 100%;
+    padding: 13px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #087b43;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .googleBtn {
+    background: white;
+    color: #333;
+    border: 1px solid #ccc;
+  }
+
+  #authMessage {
+    color: #d00000;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  #authSwitch {
+    color: #087b43;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  #logoutBtn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 999998;
+    padding: 9px 13px;
+    border: none;
+    border-radius: 7px;
+    background: #c62828;
+    color: white;
+    display: none;
+  }
+</style>
+
+<div id="authScreen">
+  <div class="authCard">
+    <div class="authLogo">ETP</div>
+    <h2>HSC E Test Paper</h2>
+    <p id="authTitle">শিক্ষার্থী লগইন</p>
+
+    <form id="authForm">
+      <input id="authEmail" type="email"
+        placeholder="তোমার Email লিখো" required>
+
+      <input id="authPassword" type="password"
+        placeholder="Password লিখো (কমপক্ষে ৬ অক্ষর)"
+        minlength="6" required>
+
+      <button class="authBtn" id="authSubmit" type="submit">
+        Login
+      </button>
+    </form>
+
+    <button class="authBtn googleBtn" id="googleLogin">
+      Google দিয়ে Login
+    </button>
+
+    <p id="authMessage"></p>
+
+    <p>
+      <span id="authSwitch">নতুন অ্যাকাউন্ট তৈরি করো</span>
+    </p>
+  </div>
+</div>
+
+<button id="logoutBtn">Logout</button>
+
+<script type="module">
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+  import {
+    getApp,
+    getApps
+  } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+
+  // আগের Firebase App-ই ব্যবহার করা হচ্ছে
+  const app = getApps().length ? getApp() : null;
+
+  if (!app) {
+    throw new Error("Firebase App পাওয়া যায়নি। আগের Firebase Config পরীক্ষা করো।");
+  }
+
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const screen = document.getElementById("authScreen");
+  const form = document.getElementById("authForm");
+  const title = document.getElementById("authTitle");
+  const submit = document.getElementById("authSubmit");
+  const switchBtn = document.getElementById("authSwitch");
+  const message = document.getElementById("authMessage");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  let isRegister = false;
+
+  switchBtn.addEventListener("click", () => {
+    isRegister = !isRegister;
+
+    title.textContent = isRegister
+      ? "নতুন অ্যাকাউন্ট তৈরি"
+      : "শিক্ষার্থী লগইন";
+
+    submit.textContent = isRegister
+      ? "Registration"
+      : "Login";
+
+    switchBtn.textContent = isRegister
+      ? "আগে অ্যাকাউন্ট আছে? Login করো"
+      : "নতুন অ্যাকাউন্ট তৈরি করো";
+
+    message.textContent = "";
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("authEmail").value.trim();
+    const password = document.getElementById("authPassword").value;
+
+    message.textContent = "অপেক্ষা করো...";
+    submit.disabled = true;
+
+    try {
+      if (isRegister) {
+        await createUserWithEmailAndPassword(auth, email, password);
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
+    } catch (error) {
+      message.textContent = error.code === "auth/email-already-in-use"
+        ? "এই Email দিয়ে আগে অ্যাকাউন্ট তৈরি হয়েছে।"
+        : error.code === "auth/invalid-credential"
+        ? "Email অথবা Password সঠিক নয়।"
+        : error.code === "auth/weak-password"
+        ? "আরও শক্তিশালী Password দাও।"
+        : error.code === "auth/network-request-failed"
+        ? "ইন্টারনেট সংযোগ পরীক্ষা করো।"
+        : "সমস্যা হয়েছে: " + error.message;
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  document.getElementById("googleLogin")
+    .addEventListener("click", async () => {
+      message.textContent = "Google Login হচ্ছে...";
+
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (error) {
+        message.textContent = "Google Login হয়নি: " + error.message;
+      }
+    });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      screen.style.display = "none";
+      logoutBtn.style.display = "block";
+    } else {
+      screen.style.display = "flex";
+      logoutBtn.style.display = "none";
+    }
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+  const confirmLogout = confirm(
+    "তুমি কি সত্যিই Logout করতে চাও?"
+  );
+
+  if (confirmLogout) {
+    await signOut(auth);
+  }
+});
+</script>
 
 </body>
 </html>
