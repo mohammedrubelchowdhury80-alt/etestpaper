@@ -375,7 +375,72 @@ button:active,
 <h2 class="section-title">আপনার বিভাগ নির্বাচন করুন</h2>
 <div class="grid" id="streamList"></div>
 </div>
+<!-- ADMIN PANEL -->
+  <div id="adminAccess" style="display:none; margin:15px 0;">
+  <button
+    type="button"
+    onclick="showAdminPanel()"
+    class="action">
+    Admin Panel
+  </button>
+  </div>
+<div id="adminPage" class="hidden">
 
+  <div class="topbar">
+    <button class="back" onclick="goHome()">← ফিরে যান</button>
+    <h2 class="page-title">Admin Panel</h2>
+  </div>
+
+  <div class="option">
+    <h3>নতুন বোর্ড MCQ যোগ করুন</h3>
+
+    <label>বিষয় নির্বাচন</label>
+    <select id="adminSubject">
+      <option value="ict">তথ্য ও যোগাযোগ প্রযুক্তি</option>
+      <option value="bangla1">বাংলা ১ম পত্র</option>
+      <option value="bangla2">বাংলা ২য় পত্র</option>
+      <option value="english1">English 1st Paper</option>
+      <option value="english2">English 2nd Paper</option>
+    </select>
+
+    <label>অধ্যায় নির্বাচন</label>
+    <select id="adminChapter">
+      <option value="ict_chapter1">তথ্য ও যোগাযোগ প্রযুক্তি: বিশ্ব ও বাংলাদেশ প্রেক্ষিত</option>
+      <option value="ict_chapter2">কমিউনিকেশন সিস্টেমস ও নেটওয়ার্কিং</option>
+    </select>
+
+    <label>প্রশ্ন</label>
+    <textarea id="adminQuestion" placeholder="প্রশ্ন লিখুন"></textarea>
+
+    <label>Option A</label>
+    <input id="adminA" placeholder="প্রথম অপশন">
+
+    <label>Option B</label>
+    <input id="adminB" placeholder="দ্বিতীয় অপশন">
+
+    <label>Option C</label>
+    <input id="adminC" placeholder="তৃতীয় অপশন">
+
+    <label>Option D</label>
+    <input id="adminD" placeholder="চতুর্থ অপশন">
+
+    <label>সঠিক উত্তর</label>
+    <select id="adminAnswer">
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+    </select>
+
+    <button class="action" id="saveQuestionBtn">
+      MCQ সংরক্ষণ করুন
+    </button>
+
+    <p id="adminMessage"></p>
+  </div>
+
+</div>
+<!-- ADMIN PANEL END -->
 <div id="subjectsPage" class="hidden">
 <div class="topbar">
 <button class="back" onclick="goHome()">← ফিরে যান</button>
@@ -4404,21 +4469,43 @@ function goDetails(){
 }
 
 
-function getQuestions(){
-const key=selectedBook+"|"+selectedChapterName;
-return questionBank[key]||[];
+async function getQuestions(){
+  const key=selectedBook+"|"+selectedChapterName;
+  const oldQuestions=questionBank[key]||[];
+
+  if(selectedBook!=="তথ্য ও যোগাযোগ প্রযুক্তি"){
+    return oldQuestions;
+  }
+
+  const chapterId="ict_chapter"+(selectedChapter+1);
+
+  const newQuestions=await window.loadFirestoreQuestions(
+    "ict",
+    chapterId
+  );
+
+  return oldQuestions.concat(newQuestions);
 }
 
-function getFullBookQuestions(){
-let all=[];
-if(!selectedBookData || !selectedBookData.chapters)return all;
-selectedBookData.chapters.forEach(chapter=>{
-const key=selectedBook+"|"+chapter;
-if(questionBank[key]){
-all=all.concat(questionBank[key]);
-}
-});
-return all;
+async function getFullBookQuestions(){
+  let all=[];
+
+  if(!selectedBookData || !selectedBookData.chapters) return all;
+
+  selectedBookData.chapters.forEach(chapter=>{
+    const key=selectedBook+"|"+chapter;
+
+    if(questionBank[key]){
+      all=all.concat(questionBank[key]);
+    }
+  });
+
+  if(selectedBook==="তথ্য ও যোগাযোগ প্রযুক্তি"){
+    const newQuestions=await window.loadFirestoreQuestions("ict");
+    all=all.concat(newQuestions);
+  }
+
+  return all;
 }
 
 function noQuestions(mode){
@@ -4433,9 +4520,9 @@ area.innerHTML=`<div class="empty">
 
 
 
-function startPractice(){
+async function startPractice(){
 
-  activeQuestions=getQuestions();
+  activeQuestions=await getQuestions();
 
   document.getElementById("practiceHeading").innerText=
   selectedChapterName;
@@ -4495,9 +4582,8 @@ html+=`<div class="answer"><b>সঠিক উত্তর:</b> ${q.options[q.an
 area.innerHTML+=html;
 });
 }
-
-function showAllAnswers(){
-activeQuestions=getQuestions();
+async function showAllAnswers(){
+activeQuestions=await getQuestions();
 document.getElementById("practiceHeading").innerText=
 selectedChapterName+" — সকল MCQ উত্তর";
 if(!activeQuestions.length){
@@ -4508,9 +4594,11 @@ renderPractice();
 showPage("practicePage");
 }
 
-function startTest(full){
+async function startTest(full){
 clearInterval(timerInterval);
-activeTestQuestions=full?getFullBookQuestions():getQuestions();
+activeTestQuestions=full
+  ? await getFullBookQuestions()
+  : await getQuestions();
 activeQuestions=activeTestQuestions;
 
 if(!activeQuestions.length){
@@ -4786,7 +4874,15 @@ if (startup) {
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
   import { getAuth } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
-
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDbeQx-a9mgGZXXYZ-dGy2whzxUFlqARX8",
@@ -4800,6 +4896,7 @@ const firebaseConfig = {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 </script>
   
 <style>
@@ -4945,7 +5042,12 @@ const firebaseConfig = {
     getApp,
     getApps
   } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
-
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
   // আগের Firebase App-ই ব্যবহার করা হচ্ছে
   const app = getApps().length ? getApp() : null;
 
@@ -4954,6 +5056,7 @@ const firebaseConfig = {
   }
 
   const auth = getAuth(app);
+  const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
 
   const screen = document.getElementById("authScreen");
@@ -5025,17 +5128,29 @@ const firebaseConfig = {
       }
     });
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      screen.style.display = "none";
-      logoutBtn.style.display = "block";
-    } else {
-      screen.style.display = "flex";
-      logoutBtn.style.display = "none";
-    }
-  });
+  const adminAccess = document.getElementById("adminAccess");
 
-  logoutBtn.addEventListener("click", async () => {
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    screen.style.display = "none";
+    logoutBtn.style.display = "block";
+
+    // শুধু Admin অ্যাকাউন্ট Admin Panel দেখতে পারবে
+    if (user.uid === "GR9ubWW5B9XTUddsXM6rPyz72xA3") {
+      adminAccess.style.display = "block";
+    } else {
+      adminAccess.style.display = "none";
+    }
+
+  } else {
+    screen.style.display = "flex";
+    logoutBtn.style.display = "none";
+    adminAccess.style.display = "none";
+  }
+});
+
+// Logout System
+logoutBtn.addEventListener("click", async () => {
   const confirmLogout = confirm(
     "তুমি কি সত্যিই Logout করতে চাও?"
   );
@@ -5044,7 +5159,104 @@ const firebaseConfig = {
     await signOut(auth);
   }
 });
-</script>
+  // Admin MCQ Save System
+document.getElementById("saveQuestionBtn")
+  .addEventListener("click", async () => {
 
+    const user = auth.currentUser;
+
+    if (!user || user.uid !== "GR9ubWW5B9XTUddsXM6rPyz72xA3") {
+      alert("তোমার Admin অনুমতি নেই!");
+      return;
+    }
+
+    const subjectId = document.getElementById("adminSubject").value;
+    const chapterId = document.getElementById("adminChapter").value;
+    const question = document.getElementById("adminQuestion").value.trim();
+
+    const optionA = document.getElementById("adminA").value.trim();
+    const optionB = document.getElementById("adminB").value.trim();
+    const optionC = document.getElementById("adminC").value.trim();
+    const optionD = document.getElementById("adminD").value.trim();
+
+    const correctAnswer = document.getElementById("adminAnswer").value;
+
+    if (!question || !optionA || !optionB || !optionC || !optionD) {
+      alert("সব প্রশ্ন ও অপশন পূরণ করো!");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "questions"), {
+        subjectId: subjectId,
+        chapterId: chapterId,
+        question: question,
+        optionA: optionA,
+        optionB: optionB,
+        optionC: optionC,
+        optionD: optionD,
+        correctAnswer: correctAnswer,
+        explanation: ""
+      });
+
+      document.getElementById("adminMessage").textContent =
+        "প্রশ্ন সফলভাবে সংরক্ষণ হয়েছে!";
+
+      document.getElementById("adminQuestion").value = "";
+      document.getElementById("adminA").value = "";
+      document.getElementById("adminB").value = "";
+      document.getElementById("adminC").value = "";
+      document.getElementById("adminD").value = "";
+
+    } catch (error) {
+      alert("প্রশ্ন সংরক্ষণ হয়নি: " + error.message);
+    }
+  });
+// Firestore থেকে MCQ লোড
+window.loadFirestoreQuestions = async function(subjectId, chapterId = null) {
+  try {
+    const snapshot = await getDocs(collection(db, "questions"));
+
+    return snapshot.docs
+      .map(docSnap => {
+        const data = docSnap.data();
+
+        return {
+          subjectId: data.subjectId,
+          chapterId: data.chapterId,
+          q: data.question,
+          options: [
+            data.optionA,
+            data.optionB,
+            data.optionC,
+            data.optionD
+          ],
+          answer: ["A", "B", "C", "D"].indexOf(
+            String(data.correctAnswer).toUpperCase()
+          ),
+          explain: data.explanation || ""
+        };
+      })
+      .filter(q =>
+        q.subjectId === subjectId &&
+        (!chapterId || q.chapterId === chapterId) &&
+        q.answer >= 0
+      )
+      .map(({subjectId, chapterId, ...question}) => question);
+
+  } catch (error) {
+    console.error("MCQ Load Error:", error);
+    throw error;
+  }
+};
+</script>
+<script>
+function showAdminPanel() {
+  document.getElementById("homePage").classList.add("hidden");
+  document.getElementById("subjectsPage").classList.add("hidden");
+  document.getElementById("adminPage").classList.remove("hidden");
+}
+
+</script>
 </body>
 </html>
