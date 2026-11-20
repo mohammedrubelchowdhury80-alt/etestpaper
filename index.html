@@ -346,6 +346,126 @@ button:active,
 
 /* ===== END GLOBAL TOUCH EFFECT ===== */
 
+/* ===== FINAL SUBJECT BOX DESIGN ===== */
+
+#streamList > .card,
+#commonBookList > .item,
+#groupSubjectList > .item,
+#optionalSubjectList > .item {
+  background: linear-gradient(145deg, var(--box-light), var(--box-dark));
+  color: #fff;
+  border: 1px solid var(--box-light);
+  border-radius: 15px;
+  box-shadow:
+    0 7px 14px rgba(0,0,0,.35),
+    inset 0 2px 3px rgba(255,255,255,.22),
+    inset 0 -4px 7px rgba(0,0,0,.28);
+}
+
+/* পাঁচটি গাঢ় রঙ */
+#streamList > *:nth-child(5n+1),
+#commonBookList > *:nth-child(5n+1),
+#groupSubjectList > *:nth-child(5n+1),
+#optionalSubjectList > *:nth-child(5n+1) {
+  --box-light: #00a844;
+  --box-dark: #003d20;
+}
+
+#streamList > *:nth-child(5n+2),
+#commonBookList > *:nth-child(5n+2),
+#groupSubjectList > *:nth-child(5n+2),
+#optionalSubjectList > *:nth-child(5n+2) {
+  --box-light: #d90020;
+  --box-dark: #57000d;
+}
+
+#streamList > *:nth-child(5n+3),
+#commonBookList > *:nth-child(5n+3),
+#groupSubjectList > *:nth-child(5n+3),
+#optionalSubjectList > *:nth-child(5n+3) {
+  --box-light: #008fc4;
+  --box-dark: #002b60;
+}
+
+#streamList > *:nth-child(5n+4),
+#commonBookList > *:nth-child(5n+4),
+#groupSubjectList > *:nth-child(5n+4),
+#optionalSubjectList > *:nth-child(5n+4) {
+  --box-light: #7900bd;
+  --box-dark: #280044;
+}
+
+#streamList > *:nth-child(5n+5),
+#commonBookList > *:nth-child(5n+5),
+#groupSubjectList > *:nth-child(5n+5),
+#optionalSubjectList > *:nth-child(5n+5) {
+  --box-light: #c66a00;
+  --box-dark: #542300;
+}
+
+/* সাদা লেখা ও কালো Shadow */
+#streamList .card h3,
+#streamList .card p,
+#commonBookList .item h3,
+#commonBookList .item p,
+#groupSubjectList .item h3,
+#groupSubjectList .item p,
+#optionalSubjectList .item h3,
+#optionalSubjectList .item p,
+#commonBookList .arrow,
+#groupSubjectList .arrow,
+#optionalSubjectList .arrow {
+  color: #fff;
+  text-shadow:
+    -1px -1px 2px #000,
+     1px -1px 2px #000,
+    -1px  1px 2px #000,
+     1px  1px 2px #000,
+     2px 3px 5px rgba(0,0,0,.9);
+}
+
+/* ===== END FINAL DESIGN ===== */
+
+/* ===== SUBJECT BOX GRID FIX ===== */
+
+#commonBookList,
+#groupSubjectList,
+#optionalSubjectList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+#commonBookList > .item,
+#groupSubjectList > .item,
+#optionalSubjectList > .item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+  min-height: 115px;
+  padding: 18px 8px;
+  margin: 0;
+  border-left: 0;
+  border-radius: 15px;
+}
+
+#commonBookList .item > div,
+#groupSubjectList .item > div,
+#optionalSubjectList .item > div {
+  width: 100%;
+}
+
+#commonBookList .arrow,
+#groupSubjectList .arrow,
+#optionalSubjectList .arrow {
+  display: none;
+}
+
+/* ===== END SUBJECT BOX GRID FIX ===== */
+
 </style>
 </head>
 <body>
@@ -437,6 +557,7 @@ button:active,
     </button>
 
     <p id="adminMessage"></p>
+    <div id="adminQuestionList"></div>
   </div>
 
 </div>
@@ -4242,6 +4363,7 @@ list.appendChild(item);
 showPage("booksPage");
 }
 
+
 function openBook(b,fromCommon=false){
 
 selectedBook=b.name;
@@ -4253,9 +4375,11 @@ document.getElementById("chapterBookHeading").innerText=b.name;
 const list=document.getElementById("chapterList");
 list.innerHTML="";
 
+let categories=[];
+
 if(b.name==="বাংলা দ্বিতীয় পত্র"){
 
-const categories=[
+categories=[
 {
 name:"ব্যাকরণ অংশ",
 chapters:b.chapters.slice(0,7)
@@ -4265,6 +4389,33 @@ name:"নির্মিতি অংশ",
 chapters:b.chapters.slice(7,12)
 }
 ];
+
+}else if(b.name==="বাংলা প্রথম পত্র"){
+
+categories=[
+{name:"গদ্য",chapters:b.chapters.slice(0,10)},
+{name:"পদ্য",chapters:b.chapters.slice(10,24)},
+{name:"উপন্যাস",chapters:b.chapters.slice(24,25)},
+{name:"নাটক",chapters:b.chapters.slice(25,26)}
+];
+
+}else if(b.name==="English 1st Paper"){
+
+categories=[
+{name:"Reading Part",chapters:b.chapters.slice(0,7)},
+{name:"Writing Part",chapters:b.chapters.slice(7,11)}
+];
+
+}else if(b.name==="English 2nd Paper"){
+
+categories=[
+{name:"Grammar Part",chapters:b.chapters.slice(0,12)},
+{name:"Writing Part",chapters:b.chapters.slice(12,17)}
+];
+
+}
+
+if(categories.length){
 
 categories.forEach(category=>{
 
@@ -4315,7 +4466,7 @@ list.appendChild(item);
 
 showPage("chapterPage");
 }
-
+  
 
 function openBanglaCategory(category){
 
@@ -4323,7 +4474,7 @@ const list=document.getElementById("chapterList");
 list.innerHTML="";
 
 document.getElementById("chapterBookHeading").innerText=
-"বাংলা দ্বিতীয় পত্র - "+category.name;
+selectedBook+" - "+category.name;
 
 category.chapters.forEach((chapter,i)=>{
 
@@ -4331,8 +4482,16 @@ const item=document.createElement("div");
 item.className="item";
 item.style.setProperty("--color","#087a42");
 
+let heading=chapter;
+
+if(selectedBook==="বাংলা দ্বিতীয় পত্র"){
+heading=(category.name==="ব্যাকরণ অংশ"?"ব্যাকরণ ":"নির্মিতি ")+(i+1);
+}else{
+heading="বিষয় "+(i+1);
+}
+
 item.innerHTML=`<div>
-<h3>${category.name==="ব্যাকরণ অংশ"?"ব্যাকরণ":"নির্মিতি"} ${i+1}</h3>
+<h3>${heading}</h3>
 <p>${chapter}</p>
 </div><span class="arrow">›</span>`;
 
@@ -4346,7 +4505,6 @@ list.appendChild(item);
 });
 
 }
-
 
 function openChapter(index,name){
 
@@ -4418,8 +4576,6 @@ appLoadingTimer=setTimeout(()=>{
 
 }
 
-
-
 function goHome(){
 clearInterval(timerInterval);
 showPage("homePage");
@@ -4436,24 +4592,17 @@ showPage("subjectsPage");
 showPage("booksPage");
 }
 }
-
 function goChapters(){
 
-clearInterval(timerInterval);
+  clearInterval(timerInterval);
 
-if(selectedBook==="বাংলা দ্বিতীয় পত্র"){
+  if(selectedBook==="বাংলা প্রথম পত্র"){
+    openBook(selectedBookData);
+    return;
+  }
 
-openBook(selectedBookData,openedFromCommon);
-
-}else{
-
-showPage("chapterPage");
-
-}
-
-}
-
-
+  showPage("chapterPage");
+  }
 function goDetails(){
 
   clearInterval(timerInterval);
@@ -4468,106 +4617,35 @@ function goDetails(){
   showPage("detailsPage");
 }
 
-
-async function getQuestions(){
-  const key=selectedBook+"|"+selectedChapterName;
-  const oldQuestions=questionBank[key]||[];
-
-  if(selectedBook!=="তথ্য ও যোগাযোগ প্রযুক্তি"){
-    return oldQuestions;
-  }
-
-  const chapterId="ict_chapter"+(selectedChapter+1);
-
-  const newQuestions=await window.loadFirestoreQuestions(
-    "ict",
-    chapterId
-  );
-
-  return oldQuestions.concat(newQuestions);
-}
-
-async function getFullBookQuestions(){
-  let all=[];
-
-  if(!selectedBookData || !selectedBookData.chapters) return all;
-
-  selectedBookData.chapters.forEach(chapter=>{
-    const key=selectedBook+"|"+chapter;
-
-    if(questionBank[key]){
-      all=all.concat(questionBank[key]);
-    }
-  });
-
-  if(selectedBook==="তথ্য ও যোগাযোগ প্রযুক্তি"){
-    const newQuestions=await window.loadFirestoreQuestions("ict");
-    all=all.concat(newQuestions);
-  }
-
-  return all;
-}
-
-function noQuestions(mode){
-const area=mode==="practice"?
-document.getElementById("practiceQuestions"):
-document.getElementById("testQuestions");
-area.innerHTML=`<div class="empty">
-<h3>প্রশ্ন এখনো যুক্ত করা হয়নি</h3>
-<p>এই অধ্যায়ের MCQ প্রশ্ন ও সঠিক উত্তর যুক্ত হলে এখানে ${mode==="practice"?"অনুশীলন":"পরীক্ষা"} করা যাবে।</p>
-</div>`;
-}
-
-
-
 async function startPractice(){
-
-  activeQuestions=await getQuestions();
+  const area=document.getElementById("practiceQuestions");
 
   document.getElementById("practiceHeading").innerText=
-  selectedChapterName;
+    selectedChapterName+" — অনুশীলন মোড";
 
-  if(!activeQuestions.length){
-    noQuestions("practice");
-  }else{
-    renderPractice();
-  }
+  area.innerHTML="⏳ MCQ লোড হচ্ছে...";
+  showPage("practicePage");
 
-  const loader=document.getElementById("appLoading");
-  const progress=document.querySelector(".loader-progress");
+  try{
+    activeQuestions=await getQuestions();
 
-  if(loader){
-    loader.classList.add("show");
-  }
-
-  if(progress){
-    progress.style.animation="none";
-    void progress.offsetWidth;
-    progress.style.animation="loadingProgress 1.1s ease-out forwards";
-  }
-
-  clearTimeout(appLoadingTimer);
-
-  appLoadingTimer=setTimeout(()=>{
-
-    if(loader){
-      loader.classList.remove("show");
+    if(!activeQuestions.length){
+      noQuestions("practice");
+    }else{
+      renderPractice();
     }
+  }catch(error){
+    area.innerHTML="প্রশ্ন লোড করা যায়নি। আবার চেষ্টা করুন।";
+    console.error(error);
+  }
+  }
+  async function getQuestions(){
 
-    pages.forEach(p=>{
-      document.getElementById(p).classList.toggle(
-        "hidden",p!=="practicePage"
-      );
-    });
+  const key=selectedBook+"|"+selectedChapterName;
 
-    window.scrollTo(0,0);
+  return questionBank[key] || [];
 
-  },1100);
-
-}
-
-
-
+  }
 function renderPractice(){
 const area=document.getElementById("practiceQuestions");
 area.innerHTML="";
@@ -4582,64 +4660,117 @@ html+=`<div class="answer"><b>সঠিক উত্তর:</b> ${q.options[q.an
 area.innerHTML+=html;
 });
 }
+
 async function showAllAnswers(){
-activeQuestions=await getQuestions();
-document.getElementById("practiceHeading").innerText=
-selectedChapterName+" — সকল MCQ উত্তর";
-if(!activeQuestions.length){
-noQuestions("practice");
-}else{
-renderPractice();
-}
-showPage("practicePage");
-}
+  const area=document.getElementById("practiceQuestions");
 
+  document.getElementById("practiceHeading").innerText=
+    selectedChapterName+" — সকল MCQ উত্তর";
+
+  area.innerHTML="⏳ MCQ লোড হচ্ছে...";
+  showPage("practicePage");
+
+  try{
+    activeQuestions=await getQuestions();
+
+    if(!activeQuestions.length){
+      noQuestions("practice");
+    }else{
+      renderPractice();
+    }
+  }catch(error){
+    area.innerHTML="প্রশ্ন লোড করা যায়নি। আবার চেষ্টা করুন।";
+    console.error(error);
+  }
+}
 async function startTest(full){
-clearInterval(timerInterval);
-activeTestQuestions=full
-  ? await getFullBookQuestions()
-  : await getQuestions();
-activeQuestions=activeTestQuestions;
+  clearInterval(timerInterval);
 
-if(!activeQuestions.length){
-document.getElementById("testHeading").innerText=
-full?"মডেল টেস্ট — "+selectedBook:selectedChapterName;
-noQuestions("test");
-showPage("testPage");
-return;
-}
+  const area=document.getElementById("testQuestions");
 
-remaining=600;
-userAnswers=Array(activeQuestions.length).fill(null);
-document.getElementById("testHeading").innerText=
-full?"মডেল টেস্ট — "+selectedBook:selectedChapterName;
-renderTest();
-updateTimer();
+  document.getElementById("testHeading").innerText=
+    full?"মডেল টেস্ট — "+selectedBook:selectedChapterName;
 
-timerInterval=setInterval(()=>{
-remaining--;
-updateTimer();
-if(remaining<=0)finishTest();
-},1000);
+  area.innerHTML="⏳ পরীক্ষার প্রশ্ন লোড হচ্ছে...";
+  showPage("testPage");
 
-showPage("testPage");
-}
+  try{
+    activeTestQuestions=full
+      ? await getFullBookQuestions()
+      : await getQuestions();
+
+    activeQuestions=activeTestQuestions;
+
+    if(!activeQuestions.length){
+      noQuestions("test");
+      return;
+    }
+
+    remaining=600;
+    userAnswers=Array(activeQuestions.length).fill(null);
+
+    renderTest();
+    updateTimer();
+
+    timerInterval=setInterval(()=>{
+      remaining--;
+      updateTimer();
+      if(remaining<=0)finishTest();
+    },1000);
+
+  }catch(error){
+    area.innerHTML="প্রশ্ন লোড করা যায়নি। আবার চেষ্টা করুন।";
+    console.error(error);
+  }
+  }
 
 function renderTest(){
-const area=document.getElementById("testQuestions");
-area.innerHTML="";
-activeQuestions.forEach((q,i)=>{
-let html=`<div class="question"><h3>${i+1}. ${q.q}</h3>`;
-q.options.forEach((o,j)=>{
-html+=`<label class="choice">
-<input type="radio" name="q${i}" value="${j}"
-onchange="saveAnswer(${i},${j})">
-${String.fromCharCode(65+j)}. ${o}
-</label>`;
-});
-html+="</div>";
-area.innerHTML+=html;
-});
+  const area=document.getElementById("testQuestions");
+
+  const html=activeQuestions.map((q,i)=>{
+    const options=q.options.map((o,j)=>`
+      <label class="choice">
+        <input type="radio" name="q${i}" value="${j}"
+          onchange="saveAnswer(${i},${j})">
+        ${String.fromCharCode(65+j)}. ${o}
+      </label>
+    `).join("");
+
+    return `
+      <div class="question">
+        <h3>${i+1}. ${q.q}</h3>
+        ${options}
+      </div>
+    `;
+  }).join("");
+
+  area.innerHTML=html;
+}
+
+function renderPractice(){
+  const area=document.getElementById("practiceQuestions");
+
+  const html=activeQuestions.map((q,i)=>{
+    let options=q.options.map((o,j)=>`
+      <div class="choice ${j===q.answer?"correct":""}">
+        ${String.fromCharCode(65+j)}. ${o}
+        ${j===q.answer?"✓":""}
+      </div>
+    `).join("");
+
+    return `
+      <div class="question">
+        <h3>${i+1}. ${q.q}</h3>
+        ${options}
+        <div class="answer">
+          <b>সঠিক উত্তর:</b> ${q.options[q.answer]}
+          <br><b>ব্যাখ্যা:</b> ${q.explain||"ব্যাখ্যা যুক্ত করা হয়নি।"}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  area.innerHTML=html;
 }
 
 function saveAnswer(i,j){
@@ -5044,9 +5175,12 @@ const firebaseConfig = {
   } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
 import {
   getFirestore,
-  collection,
-  addDoc,
-  getDocs
+collection,
+addDoc,
+getDocs,
+updateDoc,
+deleteDoc,
+doc
 } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
   // আগের Firebase App-ই ব্যবহার করা হচ্ছে
   const app = getApps().length ? getApp() : null;
@@ -5212,6 +5346,100 @@ document.getElementById("saveQuestionBtn")
       alert("প্রশ্ন সংরক্ষণ হয়নি: " + error.message);
     }
   });
+  // Admin MCQ List
+window.loadAdminQuestionList = async function() {
+  const area = document.getElementById("adminQuestionList");
+  area.textContent = "MCQ লোড হচ্ছে...";
+
+  if (!auth.currentUser ||
+      auth.currentUser.uid !== "GR9ubWW5B9XTUddsXM6rPyz72xA3") {
+    area.textContent = "Admin অনুমতি নেই!";
+    return;
+  }
+
+  try {
+    const snapshot = await getDocs(collection(db, "questions"));
+    area.innerHTML = "";
+
+    snapshot.docs.forEach(docSnap => {
+      const data = docSnap.data();
+      const item = document.createElement("div");
+      item.className = "option";
+
+      const question = document.createElement("p");
+      question.textContent = data.question;
+      item.appendChild(question);
+
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Edit";
+      editBtn.className = "action";
+
+      editBtn.onclick = async () => {
+        const newQuestion = prompt("প্রশ্ন পরিবর্তন করুন:", data.question);
+        if (newQuestion === null || !newQuestion.trim()) return;
+
+        const fields = {};
+        fields.question = newQuestion.trim();
+
+        for (const letter of ["A", "B", "C", "D"]) {
+          const value = prompt(
+            "Option " + letter + " পরিবর্তন করুন:",
+            data["option" + letter]
+          );
+          if (value === null || !value.trim()) return;
+          fields["option" + letter] = value.trim();
+        }
+
+        const answer = prompt(
+          "সঠিক উত্তর A, B, C অথবা D লিখুন:",
+          data.correctAnswer
+        );
+
+        if (!answer || !["A", "B", "C", "D"].includes(answer.toUpperCase())) {
+          alert("সঠিক উত্তর A, B, C অথবা D হতে হবে!");
+          return;
+        }
+
+        fields.correctAnswer = answer.toUpperCase();
+
+        try {
+          await updateDoc(doc(db, "questions", docSnap.id), fields);
+          alert("MCQ আপডেট হয়েছে!");
+          window.loadAdminQuestionList();
+        } catch (error) {
+          alert("আপডেট হয়নি: " + error.message);
+        }
+      };
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.className = "action";
+
+      deleteBtn.onclick = async () => {
+        if (!confirm("এই MCQ মুছে ফেলতে চাও?")) return;
+
+        try {
+          await deleteDoc(doc(db, "questions", docSnap.id));
+          alert("MCQ মুছে ফেলা হয়েছে!");
+          window.loadAdminQuestionList();
+        } catch (error) {
+          alert("মুছে ফেলা যায়নি: " + error.message);
+        }
+      };
+
+      item.appendChild(editBtn);
+      item.appendChild(deleteBtn);
+      area.appendChild(item);
+    });
+
+    if (snapshot.empty) {
+      area.textContent = "এখনো কোনো MCQ যোগ করা হয়নি।";
+    }
+
+  } catch (error) {
+    area.textContent = "MCQ লোড হয়নি: " + error.message;
+  }
+};
 // Firestore থেকে MCQ লোড
 window.loadFirestoreQuestions = async function(subjectId, chapterId = null) {
   try {
@@ -5255,7 +5483,9 @@ function showAdminPanel() {
   document.getElementById("homePage").classList.add("hidden");
   document.getElementById("subjectsPage").classList.add("hidden");
   document.getElementById("adminPage").classList.remove("hidden");
-}
+  if (window.loadAdminQuestionList) 
+  window.loadAdminQuestionList();
+  }
 
 </script>
 </body>
