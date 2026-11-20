@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#12366a">
+<title>E Test Paper | HSC 2027 Humanities</title>
+<style>
+:root{--navy:#12366a;--blue:#2563eb;--ink:#17243a;--muted:#68778b;--line:#e3e9f2;--bg:#f3f6fb;--green:#16845b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Noto Sans Bengali",sans-serif}
+header{background:linear-gradient(125deg,#102b52,#2862a8);color:#fff;padding:18px 16px 30px}
+nav,main{max-width:980px;margin:auto}.brand{font-size:22px;font-weight:850;display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:12px;background:white;color:var(--navy);display:grid;place-items:center;font-weight:900}
+.hero{text-align:center;padding:28px 0 0}.hero h1{font-size:clamp(25px,5vw,38px);margin:0 0 8px}.hero p{color:#dce8fb;margin:0}
+.wrap{padding:20px 15px}.notice{background:#fff8e6;border:1px solid #f0d99b;color:#75551a;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.6;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat,.panel,.subject,.paper,.chapter,.quizbox{background:white;border:1px solid var(--line);border-radius:14px;padding:15px}.stat{text-align:center}.stat b{display:block;color:var(--navy);font-size:20px}.stat small{color:var(--muted)}
+.heading{margin:25px 0 12px}.heading h2{margin:0;font-size:21px}.heading p{margin:4px 0;color:var(--muted);font-size:13px}
+.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.subject{cursor:pointer;text-align:left;color:var(--ink);width:100%;font:inherit}.subject:hover,.paper:hover{border-color:#91b5f5}.subject .emoji{font-size:24px}.subject b{display:block;margin:6px 0 2px}.subject small{color:var(--muted)}
+button{font:inherit}.btn{border:0;border-radius:9px;background:var(--blue);color:white;padding:11px 15px;font-weight:700;cursor:pointer}.secondary{border:1px solid #dce3ed;background:white;color:var(--ink);border-radius:9px;padding:10px 14px;cursor:pointer}.back{margin-bottom:13px}
+.paperlist{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.paper{cursor:pointer;text-align:left;color:var(--ink)}.paper b{display:block}.paper small,.muted{color:var(--muted)}
+.chapterlist{display:grid;gap:9px}.chapter{display:flex;align-items:center;justify-content:space-between;gap:10px}.chapter button{white-space:nowrap}
+.hidden{display:none!important}.tag{font-size:11px;color:#25539a;background:#edf4ff;padding:4px 8px;border-radius:20px}
+.quizbox{margin-top:12px;padding:18px}.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;gap:8px}.progress{height:7px;background:#e7edf5;border-radius:8px;margin:12px 0}.progress div{height:100%;background:#13b8a6;border-radius:8px}
+.options{display:grid;gap:9px}.option{background:white;border:1px solid #dfe6ef;padding:12px;border-radius:9px;text-align:left;cursor:pointer;color:var(--ink)}.option.correct{background:#e8f7ef;border-color:#68bd94}.option.wrong{background:#fff0f1;border-color:#df929a}.feedback{background:#f0f4fa;padding:12px;border-radius:9px;margin-top:12px;line-height:1.6;font-size:14px}.actions{display:flex;justify-content:space-between;gap:10px;margin-top:15px}
+.result{text-align:center;padding:25px}.result strong{font-size:36px;color:var(--blue)}footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+@media(max-width:650px){.subjects{grid-template-columns:repeat(2,1fr)}.paperlist{grid-template-columns:1fr}.stat{padding:10px 4px}.stat b{font-size:17px}}
+</style>
+</head>
+<body>
+<header><nav><div class="brand"><span class="logo">ET</span>E TEST PAPER</div></nav>
+<div class="hero"><h1>HSC ২০২৭ · মানবিক বিভাগ</h1><p>বিষয়, পত্র ও অধ্যায় নির্বাচন করে MCQ অনুশীলন করুন</p></div></header>
+<main class="wrap">
+<div class="notice"><b>সিলেবাস নোট:</b> এটি ওয়েবসাইটের প্রাথমিক কাঠামো। ২০২৭ সালের সরকারি সিলেবাস ও তোমার কলেজে থাকা বিষয়-সমন্বয় যাচাই করে অধ্যায়ের নাম ও প্রশ্ন একে একে যোগ করা হবে। আপাতত যেখানে “প্রশ্ন যোগ করা হচ্ছে” লেখা আছে, সেখানে যাচাইকৃত MCQ এখনো যুক্ত হয়নি।</div>
+<section id="home">
+<div class="stats"><div class="stat"><b>HSC ২০২৭</b><small>লক্ষ্য ব্যাচ</small></div><div class="stat"><b>১১টি</b><small>বিষয় বিভাগ</small></div><div class="stat"><b>ফ্রি</b><small>অনুশীলন</small></div></div>
+<div class="heading"><h2>বিষয় নির্বাচন করুন</h2><p>একটি বিষয় নির্বাচন করলে তার পত্রগুলো দেখাবে</p></div>
+<div class="subjects" id="subjects"></div>
+<div class="panel" style="margin-top:18px"><h3>📝 মিশ্র মডেল টেস্ট</h3><p class="muted">যাচাইকৃত প্রশ্ন যোগ হলে বিভিন্ন বিষয় মিলিয়ে পরীক্ষা দেওয়া যাবে।</p><button class="btn" onclick="alert('মডেল টেস্টে প্রশ্ন যোগ করা হচ্ছে। প্রথমে বিষয়ভিত্তিক MCQ যুক্ত হবে।')">মডেল টেস্ট</button></div>
+</section>
+<section id="papers" class="hidden">
+<button class="secondary back" onclick="showHome()">← বিষয় তালিকায় ফিরুন</button>
+<div class="heading"><h2 id="subjectTitle"></h2><p>পত্র নির্বাচন করুন</p></div><div id="paperList" class="paperlist"></div>
+</section>
+<section id="chapters" class="hidden">
+<button class="secondary back" onclick="showPapers()">← পত্রে ফিরুন</button>
+<div class="heading"><h2 id="paperTitle"></h2><p>অধ্যায় নির্বাচন করুন</p></div>
+<div class="notice">অধ্যায়ের সঠিক নাম ও ক্রম সরকারি ২০২৭ সিলেবাস/পাঠ্যবই দেখে যুক্ত করা হবে। ভুল অধ্যায় বা বানানো প্রশ্ন দেখানো হচ্ছে না।</div>
+<div id="chapterList" class="chapterlist"></div>
+</section>
+<section id="quiz" class="hidden">
+<button class="secondary back" onclick="showChapters()">← অধ্যায়ে ফিরুন</button>
+<div class="quizbox"><div class="meta"><span id="qCount"></span><span id="qScore"></span></div><div class="progress"><div id="bar"></div></div><div id="qArea"></div></div>
+</section>
+<section id="result" class="hidden"><div class="panel result"><h2>অনুশীলন সম্পন্ন!</h2><strong id="finalScore"></strong><p id="resultMsg"></p><button class="btn" onclick="showChapters()">আবার চেষ্টা করুন</button> <button class="secondary" onclick="showHome()">হোমে ফিরুন</button></div></section>
+</main><footer>© <span id="year"></span> E Test Paper · শিক্ষাই শক্তি</footer>
+<script>
+const subjects=[
+{name:"বাংলা",icon:"📚",papers:["বাংলা ১ম পত্র","বাংলা ২য় পত্র"]},
+{name:"ইংরেজি",icon:"🔤",papers:["English 1st Paper","English 2nd Paper"]},
+{name:"তথ্য ও যোগাযোগ প্রযুক্তি",icon:"💻",papers:["তথ্য ও যোগাযোগ প্রযুক্তি"]},
+{name:"ইতিহাস",icon:"🏛️",papers:["ইতিহাস ১ম পত্র","ইতিহাস ২য় পত্র"]},
+{name:"ইসলামের ইতিহাস ও সংস্কৃতি",icon:"🕌",papers:["ইসলামের ইতিহাস ও সংস্কৃতি ১ম পত্র","ইসলামের ইতিহাস ও সংস্কৃতি ২য় পত্র"]},
+{name:"পৌরনীতি ও সুশাসন",icon:"⚖️",papers:["পৌরনীতি ও সুশাসন ১ম পত্র","পৌরনীতি ও সুশাসন ২য় পত্র"]},
+{name:"অর্থনীতি",icon:"📈",papers:["অর্থনীতি ১ম পত্র","অর্থনীতি ২য় পত্র"]},
+{name:"ভূগোল",icon:"🌍",papers:["ভূগোল ১ম পত্র","ভূগোল ২য় পত্র"]},
+{name:"সমাজবিজ্ঞান",icon:"👥",papers:["সমাজবিজ্ঞান ১ম পত্র","সমাজবিজ্ঞান ২য় পত্র"]},
+{name:"যুক্তিবিদ্যা",icon:"🧠",papers:["যুক্তিবিদ্যা ১ম পত্র","যুক্তিবিদ্যা ২য় পত্র"]},
+{name:"সমাজকর্ম",icon:"🤝",papers:["সমাজকর্ম ১ম পত্র","সমাজকর্ম ২য় পত্র"]},
+{name:"মনোবিজ্ঞান",icon:"🧩",papers:["মনোবিজ্ঞান ১ম পত্র","মনোবিজ্ঞান ২য় পত্র"]},
+{name:"পরিসংখ্যান",icon:"📊",papers:["পরিসংখ্যান ১ম পত্র","পরিসংখ্যান ২য় পত্র"]},
+{name:"গার্হস্থ্য বিজ্ঞান",icon:"🏠",papers:["গার্হস্থ্য বিজ্ঞান ১ম পত্র","গার্হস্থ্য বিজ্ঞান ২য় পত্র"]},
+{name:"কৃষিশিক্ষা",icon:"🌱",papers:["কৃষিশিক্ষা ১ম পত্র","কৃষিশিক্ষা ২য় পত্র"]}
+];
+/* যাচাইকৃত নমুনা প্রশ্ন: পরবর্তী আপডেটে বই/অধ্যায় ধরে বাড়ানো হবে */
+const mcq={
+"ইতিহাস|ইতিহাস ১ম পত্র|নমুনা অনুশীলন":[
+{q:"ইতিহাসের জনক কাকে বলা হয়?",o:["প্লেটো","হেরোডোটাস","এরিস্টটল","সক্রেটিস"],a:1,e:"হেরোডোটাসকে সাধারণভাবে ইতিহাসের জনক বলা হয়।"}
+],
+"বাংলা|বাংলা ১ম পত্র|নমুনা অনুশীলন":[
+{q:"‘বিদ্রোহী’ কবিতার রচয়িতা কে?",o:["রবীন্দ্রনাথ ঠাকুর","জীবনানন্দ দাশ","কাজী নজরুল ইসলাম","সুকান্ত ভট্টাচার্য"],a:2,e:"‘বিদ্রোহী’ কবিতাটি কাজী নজরুল ইসলামের রচনা।"}
+],
+"তথ্য ও যোগাযোগ প্রযুক্তি|তথ্য ও যোগাযোগ প্রযুক্তি|নমুনা অনুশীলন":[
+{q:"HTML-এর পূর্ণরূপ কী?",o:["HyperText Markup Language","HighText Machine Language","Hyper Transfer Main Link","Home Tool Markup Language"],a:0,e:"HTML-এর পূর্ণরূপ HyperText Markup Language।"}
+]
+};
+let activeSubject="",activePaper="",activeChapter="",questions=[],idx=0,score=0,answered=false;
+const $=id=>document.getElementById(id);
+function hideAll(){["home","papers","chapters","quiz","result"].forEach(x=>$(x).classList.add("hidden"))}
+function showHome(){hideAll();$("home").classList.remove("hidden");window.scrollTo(0,0)}
+function showPapers(){hideAll();$("papers").classList.remove("hidden");window.scrollTo(0,0)}
+function showChapters(){hideAll();$("chapters").classList.remove("hidden");window.scrollTo(0,0)}
+function openSubject(name){activeSubject=name;const s=subjects.find(x=>x.name===name);$("subjectTitle").textContent=name;$("paperList").innerHTML=s.papers.map(p=>`<button class="paper" onclick="openPaper('${p.replaceAll("'","\\'")}')"><b>${p}</b><small>পত্র খুলুন →</small></button>`).join("");hideAll();$("papers").classList.remove("hidden");window.scrollTo(0,0)}
+function openPaper(p){activePaper=p;$("paperTitle").textContent=activeSubject+" · "+p;const chapters=["নমুনা অনুশীলন","অধ্যায় ১","অধ্যায় ২","অধ্যায় ৩","অধ্যায় ৪","অধ্যায় ৫"];$("chapterList").innerHTML=chapters.map((c,i)=>`<div class="chapter"><div><b>${c}</b><div class="muted" style="font-size:12px">${i===0?(mcq[activeSubject+"|"+activePaper+"|"+c]?"নমুনা MCQ আছে":"প্রশ্ন যোগ করা হচ্ছে"):"সিলেবাস যাচাই করে যুক্ত হবে"}</div></div><button class="btn" onclick="openChapter('${c}')">${mcq[activeSubject+"|"+activePaper+"|"+c]?"অনুশীলন":"দেখুন"}</button></div>`).join("");hideAll();$("chapters").classList.remove("hidden");window.scrollTo(0,0)}
+function openChapter(c){activeChapter=c;questions=mcq[activeSubject+"|"+activePaper+"|"+c]||[];if(!questions.length){alert("এই অধ্যায়ের যাচাইকৃত MCQ এখনো যোগ করা হয়নি। বই/সিলেবাস অনুযায়ী পরবর্তী আপডেটে যোগ হবে।");return}idx=0;score=0;hideAll();$("quiz").classList.remove("hidden");drawQuestion();window.scrollTo(0,0)}
+function drawQuestion(){answered=false;let q=questions[idx];$("qCount").textContent=`প্রশ্ন ${idx+1} / ${questions.length}`;$("qScore").textContent="স্কোর: "+score;$("bar").style.width=(idx/questions.length*100)+"%";$("qArea").innerHTML=`<h3>${q.q}</h3><div class="options">${q.o.map((v,i)=>`<button class="option" onclick="choose(${i})">${"কখগঘ"[i]}. ${v}</button>`).join("")}</div><div id="feedback"></div><div class="actions"><button class="secondary" onclick="showChapters()">বের হয়ে যান</button><button id="nextBtn" class="btn" disabled onclick="nextQuestion()">${idx===questions.length-1?"ফলাফল":"পরের প্রশ্ন"}</button></div>`}
+function choose(n){if(answered)return;answered=true;let q=questions[idx],opts=document.querySelectorAll(".option");opts[q.a].classList.add("correct");if(n===q.a)score++;else opts[n].classList.add("wrong");opts.forEach(x=>x.disabled=true);$("feedback").innerHTML=`<div class="feedback">${n===q.a?"সঠিক উত্তর!":"সঠিক উত্তর: "+q.o[q.a]}<br>${q.e}</div>`;$("qScore").textContent="স্কোর: "+score;$("nextBtn").disabled=false}
+function nextQuestion(){if(idx<questions.length-1){idx++;drawQuestion();return}hideAll();$("result").classList.remove("hidden");$("finalScore").textContent=score+" / "+questions.length;$("resultMsg").textContent="আপনার অনুশীলন সম্পন্ন হয়েছে।";window.scrollTo(0,0)}
+$("subjects").innerHTML=subjects.map(s=>`<button class="subject" onclick="openSubject('${s.name}')"><span class="emoji">${s.icon}</span><b>${s.name}</b><small>${s.papers.length}টি পত্রের বিভাগ</small></button>`).join("");
+$("year").textContent=new Date().getFullYear();
+</script>
+</body></html>
