@@ -11973,20 +11973,12 @@ function appGoBack(fallbackPage){
   clearInterval(timerInterval);
   clearTimeout(appLoadingTimer);
 
-  const previousPage = appBackStack.pop();
-
-  if(previousPage === "__bookCategoryMenu"){
-    openBook(selectedBookData, openedFromCommon, true);
-    return;
-  }
-
-  if(previousPage && document.getElementById(previousPage)){
-    showPage(previousPage, false);
+  if(appBackStack.length > 0){
+    history.back();
   }else{
     showPage(fallbackPage, false);
   }
 }
-
 
 
 function showPage(id, addHistory = true){
@@ -12002,25 +11994,30 @@ function showPage(id, addHistory = true){
   
 
 history.replaceState({appPage:"homePage"}, "", location.href);
-
-// মোবাইলের Back বাটন
+history.pushState({appPage:"homePage"}, "", location.href);
 window.addEventListener("popstate", function(){
 
   const previousPage = appBackStack.pop();
 
   if(previousPage === "__bookCategoryMenu"){
-    openBook(selectedBookData, openedFromCommon);
+    openBook(selectedBookData, openedFromCommon, true);
     return;
   }
 
   if(previousPage && document.getElementById(previousPage)){
     showPage(previousPage, false);
   }else{
-    showPage("homePage", false);
+  showPage("homePage", false);
+
+  history.pushState({appPage:"homePage"}, "", location.href);
+
+  const exitApp = confirm("আপনি কি সত্যিই অ্যাপ থেকে বের হতে চান?");
+
+  if(exitApp){
+    history.back();
   }
-
-});
-
+}
+  }); // popstate event বন্ধ
 
 function loadStreams(){
 const list=document.getElementById("streamList");
@@ -12199,8 +12196,12 @@ list.appendChild(item);
 
 }); // categories.forEach বন্ধ
 
+if(fromPopstate){
+  showPage("chapterPage", false);
 }else{
-
+  navigateToPage("chapterPage");
+}
+}else{
 
 if(!b.chapters || !b.chapters.length){
 
@@ -12233,6 +12234,7 @@ if(fromPopstate){
 }else{
   navigateToPage("chapterPage");
 
+}
 }
 } // openBook() ফাংশন বন্ধ
 
@@ -12272,9 +12274,9 @@ function openBanglaCategory(category){
 
     list.appendChild(item);
 
-  });
+});
 
-  showPage("chapterPage");
+showPage("chapterPage");
 }
 
   
@@ -12354,46 +12356,23 @@ let currentBanglaCategory = null;
 
 function goHome(){
   clearInterval(timerInterval);
-  appBackStack = [];
-  banglaCategoryBackStack = [];
-  currentBanglaCategory = null;
-  showPage("homePage");
+  clearTimeout(appLoadingTimer);
+  appGoBack("homePage");
 }
 
 function goSubjects(){
   clearInterval(timerInterval);
-  appGoBack("subjectsPage");
+  appBackStack.pop();
+  showPage("subjectsPage", false);
 }
-
 
 function goBooks(){
   clearInterval(timerInterval);
-
-  // কোনো ক্যাটাগরির বিষয় তালিকায় থাকলে
-  // Back করলে বইয়ের ক্যাটাগরি মেনুতে ফিরবে
-  if(currentBanglaCategory){
-    openBook(selectedBookData, openedFromCommon);
-    return;
-  }
-
-  // ক্যাটাগরি মেনু থেকে Back করলে
-  // আগের বইয়ের মেনুতে ফিরবে
   appGoBack(openedFromCommon ? "subjectsPage" : "booksPage");
 }
 
-
-
 function goChapters(){
   clearInterval(timerInterval);
-
-  // যে ক্যাটাগরি থেকে উত্তর পেজ খোলা হয়েছিল,
-  // সেই ক্যাটাগরির বিষয় তালিকায় ফিরে যাবে
-  if(currentBanglaCategory){
-    openBanglaCategory(currentBanglaCategory);
-    return;
-  }
-
-  // ক্যাটাগরি না থাকলে আগের অধ্যায় তালিকায় ফিরবে
   appGoBack("chapterPage");
 }
 
@@ -13280,7 +13259,8 @@ function showAdminPanel() {
   document.getElementById("adminPage").classList.remove("hidden");
   if (window.loadAdminQuestionList) {
   window.loadAdminQuestionList();
-  }
+    
+ }
 }
 
 </script>
