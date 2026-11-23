@@ -116,6 +116,65 @@ footer{text-align:center;color:#888;font-size:12px;padding:25px 10px}
   font-size: 14px;
   margin-top: 10px;
 }
+  
+/* ===== PREMIUM CHAPTER CARD DESIGN ===== */
+
+#chapterList .item {
+  background: linear-gradient(120deg, #00a85a, #004d2b);
+  color: white;
+  padding: 22px 18px;
+  margin-bottom: 16px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 105px;
+  box-shadow: 0 6px 15px #00000025;
+  cursor: pointer;
+  border: 1px solid #ffffff25;
+}
+
+#chapterList .item:nth-child(5n+2) {
+  background: linear-gradient(120deg, #ed1740, #790019);
+}
+
+#chapterList .item:nth-child(5n+3) {
+  background: linear-gradient(120deg, #079bd0, #003b70);
+}
+
+#chapterList .item:nth-child(5n+4) {
+  background: linear-gradient(120deg, #8500c9, #350052);
+}
+
+#chapterList .item:nth-child(5n+5) {
+  background: linear-gradient(120deg, #e58a00, #713300);
+}
+
+#chapterList .item h3 {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 7px;
+  text-shadow: 0 2px 4px #00000070;
+}
+
+#chapterList .item p {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 4px;
+  line-height: 1.6;
+  text-shadow: 0 2px 4px #00000070;
+}
+
+#chapterList .item .arrow {
+  font-size: 27px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 2px 4px #00000070;
+  flex-shrink: 0;
+}
 
 .book-animation {
   width: 150px;
@@ -9512,7 +9571,7 @@ q: "ব্যাসবাক্যসহ সমাস নির্ণয় ক�
 
     <p>ইতি,<br>
     তোর বন্ধু রুবেল<br>
-    খুলনা।</p>
+    চট্টগ্রাম।</p>
   `
 },
 
@@ -12841,6 +12900,120 @@ if (startup) {
 }
 
 // ===== END STARTUP LOADING =====
+
+  
+// ======================================
+// ENGLISH 1ST & 2ND PAPER QUESTION ANSWER
+// ======================================
+
+// English প্রশ্ন ও উত্তরের ডেটা
+const englishQuestionBank = {};
+
+  
+englishQuestionBank["English 2nd Paper|Gap Filling using Special Phrases / Words"] = [
+  {
+    q: `■ All Board 2024
+
+Complete the sentences with suitable phrases/words given in the box:
+
+<b>Box:</b> what does...look like | what's it like | would rather | had better | as if | was born | let alone | as soon as | have to | What if
+
+<b>[Dhaka Board-2024]</b>
+
+(a) Sumi talks too much. It is _______ she were a mad.
+
+(b) Can anyone tell me _______ an elephant _______? I have never seen an elephant.
+
+(c) I am eagerly waiting for your reply. Please answer me _______ you can.
+
+(d) _______ swimming in a river? I am so excited.
+
+(e) Helmet should be used while driving a motorbike. _______ you were in a bike and met a serious accident?
+
+(f) It is a secret matter. We _______ not discuss this in public.
+
+(g) Socrates who was sentenced to death by drinking hemlock _______ in 469 BC.
+
+(h) I _______ take an auto bike than go to college on foot. The exam is about to start.
+
+(i) Sometimes we _______ accept something unwillingly for the sake of peace.
+
+(j) I can hardly walk, _______ run a race.`,
+    a: `<b>Answers:</b>
+<br>(a) as if
+<br>(b) what does...look like
+<br>(c) as soon as
+<br>(d) what's it like
+<br>(e) What if
+<br>(f) had better
+<br>(g) was born
+<br>(h) would rather
+<br>(i) have to
+<br>(j) let alone`
+  }
+];
+
+
+// আগের openChapter ফাংশন সংরক্ষণ
+const originalOpenChapterForEnglish = openChapter;
+
+// English-এর জন্য নতুন ব্যবস্থা
+openChapter = function(index, name) {
+
+  if (
+    selectedBook === "English 1st Paper" ||
+    selectedBook === "English 2nd Paper"
+  ) {
+
+    selectedChapter = index;
+    selectedChapterName = name;
+
+    const key = selectedBook + "|" + name;
+    const questions = englishQuestionBank[key] || [];
+
+    document.getElementById("banglaAnswersHeading").innerText = name;
+
+    let html = "";
+
+    if (questions.length === 0) {
+
+      html = `
+        <div class="empty">
+          <h3>প্রশ্ন ও উত্তর এখনো যুক্ত করা হয়নি</h3>
+          <p>এই টপিকের প্রশ্ন ও উত্তর শিগগিরই যুক্ত করা হবে।</p>
+        </div>
+      `;
+
+    } else {
+
+      questions.forEach((item, i) => {
+
+        html += `
+          <div class="question">
+            <h3>${i + 1}. ${item.q}</h3>
+            <div class="answer">
+              ${item.a}
+            </div>
+          </div>
+        `;
+
+      });
+
+    }
+
+    document.getElementById("banglaAnswersContent").innerHTML = html;
+
+    navigateToPage("banglaAnswersPage");
+
+    return;
+  }
+
+  // অন্য সব বিষয় আগের নিয়মেই চলবে
+  return originalOpenChapterForEnglish(index, name);
+
+};
+
+
 </script>
   
 <!-- PREMIUM LOADING SCREEN -->
@@ -13000,12 +13173,54 @@ const firebaseConfig = {
     color: white;
     display: none;
   }
+
+  /* প্রথম পত্র — মাঝারি গাঢ় লাল */
+#bookList .item:first-child {
+  background: linear-gradient(120deg, #c62828, #8e1717) !important;
+}
+
+/* দ্বিতীয় পত্র — মাঝারি গাঢ় সবুজ */
+#bookList .item:nth-child(2) {
+  background: linear-gradient(120deg, #16833d, #08602c) !important;
+}
+
+/* সব লেখা ও অ্যারো সাদা */
+#bookList .item h3,
+#bookList .item p,
+#bookList .item .arrow {
+  color: #ffffff !important;
+}
+
+  /* প্রথম পত্র — 3D লাল */
+#bookList .item:first-child {
+  background: linear-gradient(145deg, #ef5350 0%, #c62828 45%, #7f1010 100%) !important;
+  border: 1px solid #ff9999 !important;
+  border-bottom: 4px solid #650b0b !important;
+  box-shadow: 0 7px 0 #650b0b, 0 10px 18px #00000035 !important;
+}
+
+/* দ্বিতীয় পত্র — 3D সবুজ */
+#bookList .item:nth-child(2) {
+  background: linear-gradient(145deg, #43b96b 0%, #16833d 45%, #075322 100%) !important;
+  border: 1px solid #8be5a5 !important;
+  border-bottom: 4px solid #034019 !important;
+  box-shadow: 0 7px 0 #034019, 0 10px 18px #00000035 !important;
+}
+
+/* সাদা লেখা */
+#bookList .item h3,
+#bookList .item p,
+#bookList .item .arrow {
+  color: #ffffff !important;
+  text-shadow: 0 2px 3px #00000055;
+  }
+  
 </style>
 
 <div id="authScreen">
   <div class="authCard">
-    <div class="authLogo">ETP</div>
-    <h2>HSC E Test Paper</h2>
+    <img src="HSC E-Test Paper.png" class="authLogo" alt="HSC Logo">
+<h2 class="authHeading">HSC E-Test Paper</h2>
     <p id="authTitle">শিক্ষার্থী লগইন</p>
 
     <form id="authForm">
