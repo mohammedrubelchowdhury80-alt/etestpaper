@@ -13214,12 +13214,79 @@ const firebaseConfig = {
   color: #ffffff !important;
   text-shadow: 0 2px 3px #00000055;
   }
+
+  
+/* ===== PREMIUM LOGIN DESIGN ===== */
+
+/* Login page title */
+.authCard h2 {
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #075c37;
+  text-shadow: 0 2px 3px rgba(0,0,0,0.12);
+  margin-bottom: 8px;
+}
+
+/* Premium login button */
+.authBtn:not(.googleBtn) {
+  background: linear-gradient(
+    120deg,
+    #087b43,
+    #00a878,
+    #087bce,
+    #7048e8,
+    #087b43
+  );
+  background-size: 300% 300%;
+  animation: premiumLoginGlow 5s ease infinite;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+  box-shadow:
+    0 5px 15px rgba(8,123,67,0.30),
+    inset 0 1px 2px rgba(255,255,255,0.35);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+/* Color animation */
+@keyframes premiumLoginGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Button interaction */
+.authBtn:not(.googleBtn):active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 7px rgba(0,0,0,0.2);
+}
+
+/* Premium login card */
+.authCard {
+  border: 1px solid rgba(8,123,67,0.15);
+  box-shadow:
+    0 12px 35px rgba(0,0,0,0.10),
+    0 3px 10px rgba(8,123,67,0.08);
+}
+
+/* ===== END PREMIUM LOGIN DESIGN ===== */
+
   
 </style>
 
 <div id="authScreen">
   <div class="authCard">
-    <img src="HSC E-Test Paper.png" class="authLogo" alt="HSC Logo">
+    <img src="https://i.ibb.co.com/4vqxL7H/HSC-E-Test-Paper-HD.png" class="authLogo" alt="HSC Logo">
 <h2 class="authHeading">HSC E-Test Paper</h2>
     <p id="authTitle">শিক্ষার্থী লগইন</p>
 
