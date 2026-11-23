@@ -525,6 +525,110 @@ button:active,
 
 /* ===== END SUBJECT BOX GRID FIX ===== */
 
+  .logo img {
+  width: 85px;
+  height: 85px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  }
+
+  header h1 {
+  font-weight: 900 !important;
+  }
+
+  
+.headline {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 12px;
+  padding: 8px 0;
+  background: #ffffff20;
+  border-radius: 6px;
+}
+
+.headline-text {
+  display: inline-block;
+  padding-left: 100%;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  animation: headlineMove 22s linear infinite;
+}
+
+@keyframes headlineMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+  #forgotPasswordBtn {
+  display: block;
+  margin: 12px auto;
+  border: none;
+  background: transparent;
+  color: #087a42;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  }
+
+  /* STUDENT PROFILE DESIGN */
+
+.profile-card {
+  text-align: center;
+  padding: 25px 18px;
+}
+
+.profile-photo,
+.profile-avatar {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  object-fit: cover;
+}
+
+.profile-photo {
+  display: none;
+}
+
+.profile-avatar {
+  background: #e5f4eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+}
+
+.profile-card h2 {
+  color: #087a42;
+  margin-bottom: 22px;
+}
+
+.profile-label {
+  color: #777;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.profile-value {
+  color: #222;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+
+.profile-logout {
+  background: #d32f2f;
+  margin-top: 28px;
+}
+  
 </style>
 </head>
 <body>
@@ -539,9 +643,17 @@ button:active,
   </div>
 </div>
 <header>
-<div class="logo">E</div>
+<div class="logo">
+  <img src="https://i.ibb.co.com/4vqxL7H/HSC-E-Test-Paper-HD.png" alt="HSC Logo">
+</div>
 <h1>HSC E-Test Paper</h1>
-<p>এইচএসসি পরীক্ষার প্রস্তুতি নিন সহজে</p>
+
+<div class="headline">
+  <div class="headline-text">
+    এইচএসসি পরীক্ষার প্রস্তুতি নিন সহজে ✦ বোর্ড পরীক্ষার গুরুত্বপূর্ণ প্রশ্ন ও উত্তর ✦ সকল বিষয়ের অধ্যায়ভিত্তিক প্রস্তুতি ✦ নিয়মিত নতুন প্রশ্ন যুক্ত হচ্ছে ✦ ঘরে বসেই নিন পরীক্ষার প্রস্তুতি ✦
+  </div>
+</div>
+
 </header>
 
 <div class="container">
@@ -554,6 +666,43 @@ button:active,
 <h2 class="section-title">আপনার বিভাগ নির্বাচন করুন</h2>
 <div class="grid" id="streamList"></div>
 </div>
+
+<!-- STUDENT PROFILE PAGE -->
+<div id="profilePage" class="hidden">
+
+  <div class="topbar">
+    <button class="back" onclick="closeStudentProfile()">
+      ← ফিরে যান
+    </button>
+    <h2 class="page-title">আমার প্রোফাইল</h2>
+  </div>
+
+  <div class="option profile-card">
+
+    <img id="profilePhoto" class="profile-photo"
+      alt="Profile Photo">
+
+    <div id="profileAvatar" class="profile-avatar">
+      👤
+    </div>
+
+    <h2 id="profileName">শিক্ষার্থী</h2>
+
+    <p class="profile-label">ইমেইল ঠিকানা</p>
+    <p id="profileEmail" class="profile-value"></p>
+
+    <p class="profile-label">অ্যাকাউন্ট তৈরির তারিখ</p>
+    <p id="profileCreated" class="profile-value"></p>
+
+    <button type="button" id="profileLogoutBtn"
+      class="action profile-logout">
+      Logout
+    </button>
+
+  </div>
+</div>
+<!-- STUDENT PROFILE PAGE END -->
+
 <!-- ADMIN PANEL -->
   <div id="adminAccess" style="display:none; margin:15px 0;">
   <button
@@ -13105,16 +13254,18 @@ const firebaseConfig = {
   }
 
   .authLogo {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    background: #087b43;
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    background: transparent;
     color: white;
     display: grid;
     place-items: center;
     margin: auto;
     font-size: 23px;
     font-weight: bold;
+    overflow: hidden;
+    object-fit: cover;
   }
 
   .authCard h2 { margin-bottom: 5px; }
@@ -13281,8 +13432,116 @@ const firebaseConfig = {
 
 /* ===== END PREMIUM LOGIN DESIGN ===== */
 
+  /* ===== END PREMIUM LOGIN DESIGN ===== */
+
+.authLogo {
+  object-fit: contain;
+  padding: 0;
+}
+
+.authCard img.authLogo {
+  transform: scale(1.15);
+}
+
+  .authHeading {
+  font-size: 20px;
+  font-weight: 900;
+  color: #000000;
+  letter-spacing: 0;
+  }
+
+  #authScreen .authCard h2.authHeading {
+  font-size: 15px !important;
+  font-weight: 1000 !important;
+  color: #000000 !important;
+  letter-spacing: 0 !important;
+  }
+
+  #authScreen .authCard h2.authHeading {
+  margin-top: 12px !important;
+  }
+
+  /* Animated colorful logo background */
+.authLogo {
+  background: linear-gradient(
+    135deg,
+    #00c853,
+    #00b0ff,
+    #7c4dff,
+    #ff4081,
+    #ff9100,
+    #00c853
+  ) !important;
+  background-size: 400% 400% !important;
+  animation: logoColorAnimation 5s ease infinite;
+}
+
+@keyframes logoColorAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+  }
+
+  /* Animated colorful background outside login card */
+#authScreen {
+  background: linear-gradient(
+    120deg,
+    #00c853,
+    #00b0ff,
+    #7c4dff,
+    #ff4081,
+    #ff9100,
+    #00c853
+  );
+  background-size: 400% 400%;
+  animation: authBackgroundColor 3s ease infinite;
+}
+
+@keyframes authBackgroundColor {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 50% 100%; }
+  75% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Login card stays white */
+#authScreen .authCard {
+  background: #ffffff !important;
+  }
+
+  .authLogo {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  }
+
+  /* Remove all logo borders and background */
+#authScreen .authCard img.authLogo {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 15px !important;
+  filter: none !important;
+}
+
+/* Remove decorative pseudo borders */
+#authScreen .authCard img.authLogo::before,
+#authScreen .authCard img.authLogo::after {
+  display: none !important;
+  content: none !important;
+  }
   
 </style>
+  
 
 <div id="authScreen">
   <div class="authCard">
@@ -13302,7 +13561,9 @@ const firebaseConfig = {
         Login
       </button>
     </form>
-
+<button type="button" id="forgotPasswordBtn">
+  পাসওয়ার্ড ভুলে গেছো?
+</button>
     <button class="authBtn googleBtn" id="googleLogin">
       Google দিয়ে Login
     </button>
@@ -13325,7 +13586,8 @@ const firebaseConfig = {
     GoogleAuthProvider,
     signInWithPopup,
     onAuthStateChanged,
-    signOut
+    signOut,
+    sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 
   import {
@@ -13361,7 +13623,43 @@ doc
   const logoutBtn = document.getElementById("logoutBtn");
 
   let isRegister = false;
+// =================================
+// FORGOT PASSWORD SYSTEM
+// =================================
 
+document.getElementById("forgotPasswordBtn")
+  .addEventListener("click", async () => {
+
+    const email = document.getElementById("authEmail")
+      .value.trim();
+
+    if (!email) {
+      message.textContent = "প্রথমে তোমার Gmail লিখো।";
+      return;
+    }
+
+    try {
+      message.textContent = "Reset Link পাঠানো হচ্ছে...";
+
+      await sendPasswordResetEmail(auth, email);
+
+      message.textContent =
+        "তোমার Gmail-এ Password Reset Link পাঠানো হয়েছে। Gmail Inbox পরীক্ষা করো।";
+
+    } catch (error) {
+
+      message.textContent =
+        error.code === "auth/user-not-found"
+          ? "এই Gmail দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি।"
+          : error.code === "auth/invalid-email"
+          ? "সঠিক Gmail ঠিকানা লিখো।"
+          : error.code === "auth/too-many-requests"
+          ? "অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করো।"
+          : "সমস্যা হয়েছে: " + error.message;
+
+    }
+
+  });
   switchBtn.addEventListener("click", () => {
     isRegister = !isRegister;
 
@@ -13427,6 +13725,7 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     screen.style.display = "none";
     logoutBtn.style.display = "block";
+    logoutBtn.textContent = "Profile";
 
     // শুধু Admin অ্যাকাউন্ট Admin Panel দেখতে পারবে
     if (user.uid === "GR9ubWW5B9XTUddsXM6rPyz72xA3") {
@@ -13439,19 +13738,78 @@ onAuthStateChanged(auth, (user) => {
     screen.style.display = "flex";
     logoutBtn.style.display = "none";
     adminAccess.style.display = "none";
+
+    document.getElementById("profilePage").classList.add("hidden");
+    document.getElementById("homePage").classList.remove("hidden");
   }
 });
 
-// Logout System
-logoutBtn.addEventListener("click", async () => {
-  const confirmLogout = confirm(
-    "তুমি কি সত্যিই Logout করতে চাও?"
-  );
+// PROFILE BUTTON SYSTEM
+logoutBtn.textContent = "Profile";
 
-  if (confirmLogout) {
-    await signOut(auth);
+logoutBtn.addEventListener("click", () => {
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  // সব পেজ বন্ধ
+  document.querySelectorAll(".container > div").forEach(page => {
+    page.classList.add("hidden");
+  });
+
+  // Profile পেজ দেখানো
+  document.getElementById("profilePage").classList.remove("hidden");
+
+  // Profile তথ্য দেখানো
+  document.getElementById("profileName").textContent =
+    user.displayName || "শিক্ষার্থী";
+
+  document.getElementById("profileEmail").textContent =
+    user.email || "ইমেইল নেই";
+
+  document.getElementById("profileCreated").textContent =
+    user.metadata.creationTime
+      ? new Date(user.metadata.creationTime).toLocaleDateString("bn-BD")
+      : "তথ্য পাওয়া যায়নি";
+
+  const photo = document.getElementById("profilePhoto");
+  const avatar = document.getElementById("profileAvatar");
+
+  if (user.photoURL) {
+    photo.src = user.photoURL;
+    photo.style.display = "block";
+    avatar.style.display = "none";
+  } else {
+    photo.style.display = "none";
+    avatar.style.display = "flex";
   }
 });
+
+// Profile থেকে Home-এ ফিরে যাওয়া
+window.closeStudentProfile = function() {
+  document.getElementById("profilePage").classList.add("hidden");
+  document.getElementById("homePage").classList.remove("hidden");
+
+  const user = auth.currentUser;
+
+  if (user && user.uid === "GR9ubWW5B9XTUddsXM6rPyz72xA3") {
+    adminAccess.style.display = "block";
+  }
+};
+
+// Profile-এর Logout Button
+document.getElementById("profileLogoutBtn")
+  .addEventListener("click", async () => {
+
+    const confirmLogout = confirm(
+      "তুমি কি সত্যিই Logout করতে চাও?"
+    );
+
+    if (confirmLogout) {
+      await signOut(auth);
+    }
+  });
+  
   // Admin MCQ Save System
 document.getElementById("saveQuestionBtn")
   .addEventListener("click", async () => {
