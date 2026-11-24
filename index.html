@@ -13901,6 +13901,8 @@ document.getElementById("forgotPasswordBtn")
   const adminAccess = document.getElementById("adminAccess");
 
 onAuthStateChanged(auth, (user) => {
+  console.log("Firebase Auth State:", user);
+
   if (user) {
     screen.style.display = "none";
     logoutBtn.style.display = "block";
