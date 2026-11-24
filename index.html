@@ -13888,6 +13888,7 @@ document.getElementById("forgotPasswordBtn")
 
       try {
         await signInWithPopup(auth, provider);
+        console.log("Google Login Success:", auth.currentUser);
             } catch (error) {
         console.error("Google Login Error:", error);
 
