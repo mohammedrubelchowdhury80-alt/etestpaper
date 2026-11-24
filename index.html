@@ -13813,27 +13813,27 @@ document.getElementById("forgotPasswordBtn")
     }
 
     try {
-      message.textContent = "Reset Link পাঠানো হচ্ছে...";
+  message.textContent = "Reset Link পাঠানো হচ্ছে...";
 
-      await sendPasswordResetEmail(auth, email);
+  await sendPasswordResetEmail(auth, email);
 
-      message.textContent =
-        "তোমার Gmail-এ Password Reset Link পাঠানো হয়েছে। Gmail Inbox পরীক্ষা করো।";
+  message.textContent =
+    "তোমার Gmail-এ Password Reset Link পাঠানো হয়েছে। Gmail Inbox পরীক্ষা করো।";
 
-    } catch (error) {
+} catch (error) {
+  console.error("Password Reset Error:", error);
 
-      message.textContent =
-        error.code === "auth/user-not-found"
-          ? "এই Gmail দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি।"
-          : error.code === "auth/invalid-email"
-          ? "সঠিক Gmail ঠিকানা লিখো।"
-          : error.code === "auth/too-many-requests"
-          ? "অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করো।"
-          : "সমস্যা হয়েছে: " + error.message;
+  message.textContent =
+    error.code === "auth/user-not-found"
+      ? "এই Gmail দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি।"
+      : error.code === "auth/invalid-email"
+      ? "সঠিক Gmail ঠিকানা লিখো।"
+      : error.code === "auth/too-many-requests"
+      ? "অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করো।"
+      : "সমস্যা হয়েছে: " + error.message;
+}
 
-    }
-
-  });
+});
   switchBtn.addEventListener("click", () => {
     isRegister = !isRegister;
 
