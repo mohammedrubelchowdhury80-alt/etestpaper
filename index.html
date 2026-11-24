@@ -13361,7 +13361,13 @@ openChapter = function(index, name) {
 <!-- END LOADING SCREEN -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+  import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 import {
   getFirestore,
   collection,
@@ -13753,17 +13759,18 @@ const firebaseConfig = {
 <button id="logoutBtn">Logout</button>
 
 <script type="module">
-  import {
+    import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     onAuthStateChanged,
     signOut,
     sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
-
   import {
     getApp,
     getApps
@@ -13797,6 +13804,24 @@ doc
   const logoutBtn = document.getElementById("logoutBtn");
 
   let isRegister = false;
+  // =================================
+// GOOGLE REDIRECT RESULT SYSTEM
+// =================================
+
+getRedirectResult(auth)
+  .then((result) => {
+    if (result && result.user) {
+      console.log("Google Redirect Success:", result.user);
+      message.textContent = "Google Login সফল হয়েছে।";
+    }
+  })
+  .catch((error) => {
+    console.error("Google Redirect Error:", error);
+
+    message.textContent =
+      "Google Login হয়নি: " +
+      (error.code || error.message);
+  });
 // =================================
 // FORGOT PASSWORD SYSTEM
 // =================================
@@ -13883,20 +13908,19 @@ document.getElementById("forgotPasswordBtn")
   });
 
   document.getElementById("googleLogin")
-    .addEventListener("click", async () => {
-      message.textContent = "Google Login হচ্ছে...";
+  .addEventListener("click", async () => {
+    message.textContent = "Google Login হচ্ছে...";
 
-      try {
-        await signInWithPopup(auth, provider);
-        console.log("Google Login Success:", auth.currentUser);
-            } catch (error) {
-        console.error("Google Login Error:", error);
+    try {
+      await signInWithRedirect(auth, provider);
+    } catch (error) {
+      console.error("Google Login Error:", error);
 
-        message.textContent =
-          "Google Login হয়নি: " +
-          (error.code || error.message);
-  }
-    });
+      message.textContent =
+        "Google Login হয়নি: " +
+        (error.code || error.message);
+    }
+  });
 
   const adminAccess = document.getElementById("adminAccess");
 
