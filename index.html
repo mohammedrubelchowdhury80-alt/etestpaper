@@ -13888,9 +13888,13 @@ document.getElementById("forgotPasswordBtn")
 
       try {
         await signInWithPopup(auth, provider);
-      } catch (error) {
-        message.textContent = "Google Login হয়নি: " + error.message;
-      }
+            } catch (error) {
+        console.error("Google Login Error:", error);
+
+        message.textContent =
+          "Google Login হয়নি: " +
+          (error.code || error.message);
+  }
     });
 
   const adminAccess = document.getElementById("adminAccess");
@@ -13987,17 +13991,24 @@ document.getElementById("cancelLogout")
     logoutModal.style.display = "none";
   });
 
+
 document.getElementById("confirmLogout")
   .addEventListener("click", async () => {
     try {
       await signOut(auth);
       logoutModal.style.display = "none";
+
     } catch (error) {
-      alert("Logout করা যায়নি: " + error.message);
+      console.error("Logout Error:", error);
+
+      message.textContent =
+        "Logout করা যায়নি: " +
+        (error.code || error.message);
     }
   });
 
 // Admin MCQ Save System
+
 document.getElementById("saveQuestionBtn")
   .addEventListener("click", async () => {
 
