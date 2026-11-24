@@ -13813,6 +13813,10 @@ getRedirectResult(auth)
     if (result && result.user) {
       console.log("Google Redirect Success:", result.user);
       message.textContent = "Google Login সফল হয়েছে।";
+    } else {
+      message.textContent =
+        "Firebase থেকে কোনো Google Login Result পাওয়া যায়নি।";
+      console.log("Google Redirect Result:", result);
     }
   })
   .catch((error) => {
